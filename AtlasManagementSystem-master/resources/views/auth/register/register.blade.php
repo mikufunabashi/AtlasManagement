@@ -13,6 +13,15 @@
   <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 </head>
 <body>
+  @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+  @endif
   <form action="{{ route('registerPost') }}" method="POST">
     <div class="w-100 vh-100 d-flex" style="align-items:center; justify-content:center;">
       <div class="w-25 vh-75 border p-3">
@@ -142,7 +151,8 @@
             <option value="30">30</option>
             <option value="31">31</option>
           </select>
-          <label style="font-size:13px">月</label>
+          <label style="font-size:13px">日</label>
+          <input type="hidden" name="date_of_birth" id="date_of_birth" value="">
         </div>
         <div class="mt-3">
           <label class="d-block m-0" style="font-size:13px">役職</label>
@@ -173,7 +183,7 @@
         <div class="mt-3">
           <label class="d-block m-0" style="font-size:13px">確認用パスワード</label>
           <div class="border-bottom border-primary">
-            <input type="password" class="border-0 w-100 password_confirmation" name="password">
+            <input type="password" class="border-0 w-100 password_confirmation" name="password_confirmation">
           </div>
         </div>
         <div class="mt-5 text-right">
@@ -189,5 +199,22 @@
   </div>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script src="{{ asset('js/register.js') }}" rel="stylesheet"></script>
+  <script>
+    function updateDateOfBirth() {
+      var year = document.querySelector('.old_year').value;
+      var month = document.querySelector('.old_month').value;
+      var day = document.querySelector('.old_day').value;
+      if(year !== "none" && month !== "none" && day !== "none") {
+        document.getElementById('date_of_birth').value = `${year}-${month}-${day}`;
+      } else {
+        document.getElementById('date_of_birth').value = ""; // 適切な値がない場合は空にする
+      }
+    }
+
+    document.querySelector('.old_year').addEventListener('change', updateDateOfBirth);
+    document.querySelector('.old_month').addEventListener('change', updateDateOfBirth);
+    document.querySelector('.old_day').addEventListener('change', updateDateOfBirth);
+  </script>
+</body>
 </body>
 </html>

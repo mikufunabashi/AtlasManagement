@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\Users\User;
+use App\Http\Requests\UserRegistrationRequest;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -51,14 +52,24 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
+
     public function registerView()
     {
         $subjects = Subjects::all();
         return view('auth.register.register', compact('subjects'));
     }
 
-    public function registerPost(Request $request)
+    public function registerPost(UserRegistrationRequest $request)
     {
+         // バリデーションをチェック　🌟日本語にする
+        $validator = Validator::make($request->all(), $request->rules());
+
+        // バリデーションに失敗した場合はエラーメッセージを表示してリダイレクトする
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput($request->all());
+
+        }
+
         DB::beginTransaction();
         try{
             $old_year = $request->old_year;
