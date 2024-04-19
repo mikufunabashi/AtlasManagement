@@ -35,21 +35,27 @@
   <div class="w-25 ml-auto mr-auto">
     <div class="category_area mt-5 p-5">
       <div class="">
-        <p class="m-0">メインカテゴリー</p>
-        <input type="text" class="w-100" name="main_category_name" form="mainCategoryRequest">
-        <input type="submit" value="追加" class="w-100 btn btn-primary p-0" form="mainCategoryRequest">
+        <form action="{{ route('main.category.create') }}" method="post" id="mainCategoryRequest">
+          @csrf
+          <p class="m-0">メインカテゴリー</p>
+          <input type="text" class="w-100" name="main_category_name" form="mainCategoryRequest">
+          <input type="submit" value="追加" class="w-100 btn btn-primary p-0" form="mainCategoryRequest">
+        </form>
       </div>
       <!-- サブカテゴリー追加 -->
-      @can('admin')
         <div class="mt-3">
-            <form action="{{ route('main.category.create') }}" method="post" id="mainCategoryRequest">
+            <form action="{{ route('sub.category.create') }}" method="post" id="subCategoryRequest">
                 @csrf
-                <label class="d-block m-0" for="sub_category">サブカテゴリー</label>
-                <input type="text" class="w-100" name="sub_category">
-                <button type="submit" class="btn btn-primary">追加</button>
+                <p class="m-0">サブカテゴリー</p>
+                <select name="main_category_id" class="w-100">
+                  @foreach($main_categories as $main_category)
+                    <option value="{{ $main_category->id }}">{{ $main_category->main_category }}</option>
+                  @endforeach
+                </select>
+                <input type="text" class="w-100" name="sub_category_name" form="subCategoryRequest">
+                <input type="submit" value="追加" class="w-100 btn btn-primary p-0" form="subCategoryRequest">
             </form>
         </div>
-      @endcan
     </div>
   </div>
   @endcan

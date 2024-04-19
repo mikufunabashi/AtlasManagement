@@ -17,5 +17,6 @@ class Subjects extends Model
 
     public function users(){
         return $this->belongsToMany(Users::class, 'subject_user', 'subject_id', 'user_id');// リレーションの定義
+        // Subjects::class→'App\Models\Users\Users'でも可
     }
 }

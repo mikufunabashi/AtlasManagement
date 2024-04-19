@@ -11,6 +11,7 @@ use App\Models\Posts\PostComment;
 use App\Models\Posts\Like;
 use App\Models\Users\User;
 use App\Http\Requests\BulletinBoard\PostFormRequest;
+use App\Http\Requests\SubCategoryRequest;
 use Auth;
 
 class PostsController extends Controller
@@ -72,6 +73,16 @@ class PostsController extends Controller
     public function mainCategoryCreate(Request $request){
         MainCategory::create(['main_category' => $request->main_category_name]);
         return redirect()->route('post.input');
+    }
+    // 🌟name('sub.category.create')のルートを追加必要
+    public function subCategoryCreate(SubCategoryRequest $request)
+    {
+        SubCategory::create([
+            'main_category_id' => $request->input('main_category_id'), // メインカテゴリーIDを取得
+            'sub_category' => $request->input('sub_category_name'),
+        ]);
+
+        return redirect()->back()->with('success', 'サブカテゴリーが登録されました');
     }
 
     public function commentCreate(Request $request){

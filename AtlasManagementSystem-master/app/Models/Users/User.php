@@ -69,6 +69,7 @@ class User extends Authenticatable
     // 🌟モデルじゃなくね？
     public function subjects(){
         return $this->belongsToMany(Subjects::class, 'subject_user', 'user_id', 'subject_id');// リレーションの定義
+        // Subjects::class→'App\Models\Users\Subjects'でも可
     }
 
     // いいねしているかどうか
