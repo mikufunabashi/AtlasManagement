@@ -13,6 +13,7 @@ use App\Models\Users\User;
 use App\Http\Requests\BulletinBoard\PostFormRequest;
 use App\Http\Requests\SubCategoryRequest;
 use Auth;
+use Illuminate\Support\Facades\Validator;
 
 class PostsController extends Controller
 {
@@ -59,6 +60,20 @@ class PostsController extends Controller
     }
 
     public function postEdit(Request $request){
+        // バリデーションルールを定義
+        $rules = [
+            'post_title' => 'required|string|max:100',
+            'post_body' => 'required|string|max:5000',
+        ];
+
+        // バリデーションを実行
+        $validator = Validator::make($request->all(), $rules);
+
+        // バリデーションが失敗した場合
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         Post::where('id', $request->post_id)->update([
             'post_title' => $request->post_title,
             'post' => $request->post_body,

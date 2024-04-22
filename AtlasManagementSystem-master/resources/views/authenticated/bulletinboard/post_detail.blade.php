@@ -1,5 +1,14 @@
 @extends('layouts.sidebar')
 @section('content')
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <div class="vh-100 d-flex">
   <div class="w-50 mt-5">
     <div class="m-3 detail_container">
@@ -8,8 +17,13 @@
           <div>
           </div>
           <div>
-            <span class="edit-modal-open" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
-            <a href="{{ route('post.delete', ['id' => $post->id]) }}">削除</a>
+              @if(Auth::check() && $post->user_id == Auth::user()->id)
+                  <span class="edit-modal-open" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
+                  <a class="trashIcon" href="{{ route('post.delete', ['id' => $post->id]) }}" onclick="return confirm('こちらの投稿を削除してもよろしいでしょうか？')">
+                    <span class="icon-text">削除</span>
+                  </a>
+                  <!-- <a href="{{ route('post.delete', ['id' => $post->id]) }}">削除</a> -->
+              @endif
           </div>
         </div>
 
