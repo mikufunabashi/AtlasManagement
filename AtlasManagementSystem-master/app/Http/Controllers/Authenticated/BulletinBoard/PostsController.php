@@ -101,6 +101,17 @@ class PostsController extends Controller
     }
 
     public function commentCreate(Request $request){
+        $rules = [
+        'comment' => 'required|string|max:2500', // 必須項目、文字列型、最大2500文字
+        ];
+
+        // バリデータを作成
+        $validator = Validator::make($request->all(), $rules);
+
+        // バリデーションチェック
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput(); // エラーがある場合は入力値を保持して元のページにリダイレクト
+        }
         PostComment::create([
             'post_id' => $request->post_id,
             'user_id' => Auth::id(),

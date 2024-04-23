@@ -29,13 +29,14 @@ class Post extends Model
 
     // コメント数
     public function commentCounts($post_id){
-        return Post::with('postComments')->find($post_id)->postComments();
+        return PostComment::where('post_id', $post_id)->count();
     }
 
     public function likes()
     {
         return $this->belongsToMany('App\Models\Users\User', 'likes', 'like_post_id', 'like_user_id');
     }
+
 
     // 🌟likesの中間テーブルが既に存在していたから、リレーションは一つでも問題ない？
     // public function users()
