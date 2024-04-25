@@ -92,6 +92,18 @@ class PostsController extends Controller
     // 🌟name('sub.category.create')のルートを追加必要
     public function subCategoryCreate(SubCategoryRequest $request)
     {
+        // バリデーションルールを定義
+        $rules = [
+            'main_category_id' => 'required|exists:main_categories,id',
+            'sub_category_name' => 'required|string|max:100|unique:sub_categories,sub_category,NULL,id,main_category_id,' . $request->input('main_category_id')
+        ];
+         // バリデータを作成
+        $validator = Validator::make($request->all(), $rules);
+
+        // バリデーションが失敗した場合
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         SubCategory::create([
             'main_category_id' => $request->input('main_category_id'), // メインカテゴリーIDを取得
             'sub_category' => $request->input('sub_category_name'),

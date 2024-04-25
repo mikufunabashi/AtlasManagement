@@ -44,18 +44,21 @@
       </div>
       <!-- サブカテゴリー追加 -->
         <div class="mt-3">
-            <form action="{{ route('sub.category.create') }}" method="post" id="subCategoryRequest">
-                @csrf
-                <p class="m-0">サブカテゴリー</p>
-                <select name="main_category_id" class="w-100">
+          <form action="{{ route('sub.category.create') }}" method="post" id="subCategoryRequest">
+              @csrf
+              <p class="m-0">サブカテゴリー</p>
+              <select name="main_category_id" class="w-100">
                   @foreach($main_categories as $main_category)
-                    <option value="{{ $main_category->id }}">{{ $main_category->main_category }}</option>
+                      <option value="{{ $main_category->id }}">{{ $main_category->main_category }}</option>
                   @endforeach
-                </select>
-                <input type="text" class="w-100" name="sub_category_name" form="subCategoryRequest">
-                <input type="submit" value="追加" class="w-100 btn btn-primary p-0" form="subCategoryRequest">
-            </form>
-        </div>
+              </select>
+              @if($errors->has('sub_category_name'))
+                <span class="error_message">{{ $errors->first('sub_category_name') }}</span>
+              @endif
+              <input type="text" class="w-100" name="sub_category_name" form="subCategoryRequest"> <!-- 修正されたフィールド名 -->
+              <input type="submit" value="追加" class="w-100 btn btn-primary p-0" form="subCategoryRequest">
+          </form>
+      </div>
     </div>
   </div>
   @endcan
