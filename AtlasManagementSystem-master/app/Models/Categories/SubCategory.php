@@ -18,6 +18,8 @@ class SubCategory extends Model
     }
 
     public function posts(){
-        // リレーションの定義
-    }
+    // 多対多の関係を定義
+    return $this->belongsToMany('App\Models\Posts\Post', 'post_sub_categories', 'sub_category_id', 'post_id');
+}
+
 }

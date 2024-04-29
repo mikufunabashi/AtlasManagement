@@ -18,27 +18,41 @@ use Illuminate\Support\Facades\Validator;
 class PostsController extends Controller
 {
     public function show(Request $request){
+        // 全ての投稿を取得
         $posts = Post::with('user', 'postComments')->get();
-        $categories = MainCategory::get();
-        $like = new Like;
-        $post_comment = new Post;
+        // 全てのメインカテゴリーを取得
+        $main_categories = MainCategory::get();
+
+        // キーワードが入力された場合
         if(!empty($request->keyword)){
             $posts = Post::with('user', 'postComments')
-            ->where('post_title', 'like', '%'.$request->keyword.'%')
-            ->orWhere('post', 'like', '%'.$request->keyword.'%')->get();
-        }else if($request->category_word){
-            $sub_category = $request->category_word;
-            $posts = Post::with('user', 'postComments')->get();
-        }else if($request->like_posts){
+                ->where('post_title', 'like', '%'.$request->keyword.'%')
+                ->orWhere('post', 'like', '%'.$request->keyword.'%')->get();
+        }
+        // カテゴリーが選択された場合
+        elseif($request->sub_category_id){
+            $subCategoryId = $request->sub_category_id;
+            $posts = Post::whereHas('subCategories', function($query) use ($subCategoryId){
+                $query->where('sub_category_id', $subCategoryId);
+            })->with('user', 'postComments')->get();
+        }
+        // いいねした投稿が選択された場合
+        elseif($request->like_posts){
             $likes = Auth::user()->likePostId()->get('like_post_id');
             $posts = Post::with('user', 'postComments')
-            ->whereIn('id', $likes)->get();
-        }else if($request->my_posts){
-            $posts = Post::with('user', 'postComments')
-            ->where('user_id', Auth::id())->get();
+                ->whereIn('id', $likes)->get();
         }
-        return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment'));
+        // 自分の投稿が選択された場合
+        elseif($request->my_posts){
+            $posts = Post::with('user', 'postComments')
+                ->where('user_id', Auth::id())->get();
+        }
+
+        return view('authenticated.bulletinboard.posts', compact('posts', 'main_categories'));
     }
+
+
+
 
     public function postDetail($post_id){
         $post = Post::with('user', 'postComments')->findOrFail($post_id);
@@ -54,10 +68,17 @@ class PostsController extends Controller
         $post = Post::create([
             'user_id' => Auth::id(),
             'post_title' => $request->post_title,
-            'post' => $request->post_body
+            'post' => $request->post_body,
         ]);
+
+        // 投稿とサブカテゴリーの中間テーブルに関連を保存する
+        if ($request->has('sub_category_ids')) {
+            $post->subCategories()->attach($request->sub_category_ids);
+        }
+
         return redirect()->route('post.show');
     }
+
 
     public function postEdit(Request $request){
         // バリデーションルールを定義
@@ -86,16 +107,31 @@ class PostsController extends Controller
         return redirect()->route('post.show');
     }
     public function mainCategoryCreate(Request $request){
+
+        // バリデーションルールを定義
+        $rules = [
+            'main_category_name' => 'required|string|max:100|unique:main_categories,main_category',
+        ];
+
+        // バリデータを作成
+        $validator = Validator::make($request->all(), $rules);
+
+        // バリデーションが失敗した場合
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         MainCategory::create(['main_category' => $request->main_category_name]);
         return redirect()->route('post.input');
     }
+
     // 🌟name('sub.category.create')のルートを追加必要
     public function subCategoryCreate(SubCategoryRequest $request)
     {
         // バリデーションルールを定義
         $rules = [
             'main_category_id' => 'required|exists:main_categories,id',
-            'sub_category_name' => 'required|string|max:100|unique:sub_categories,sub_category,NULL,id,main_category_id,' . $request->input('main_category_id')
+            'sub_category_name' => 'required|string|max:100|unique:sub_categories,sub_category,NULL,id,main_category_id,',$request->input('main_category_id')
         ];
          // バリデータを作成
         $validator = Validator::make($request->all(), $rules);
