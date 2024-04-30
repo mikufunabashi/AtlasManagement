@@ -94,15 +94,17 @@
           </div>
           <div class="selected_engineer">
             <label>選択科目</label>
-              <div class="subject_list">
-                @foreach($subjects as $subject)
-                    <div>
-                        <input type="checkbox" name="selected_subjects[]" value="{{ $subject->id }}">
-                        <label>{{ $subject->subject }}</label>
-                    </div>
-                @endforeach
+            @if($allSubjects)
+              @foreach($allSubjects as $subject)
+              <div>
+                <input type="checkbox" name="selected_subjects" value="{{ $subject->id }}" form="userSearchRequest">
+                <label>{{ $subject->subject }}</label>
               </div>
+              @endforeach
+            @endif
           </div>
+        </div>
+
         </div>
       </div>
       <div>

@@ -15,16 +15,26 @@ class UsersController extends Controller
 {
 
     public function showUsers(Request $request){
+        // 検索条件をログに記録する
+        \Log::info('Received search request', [
+            'keyword' => $request->keyword,
+            'category' => $request->category,
+            'updown' => $request->updown,
+            'gender' => $request->sex,
+            'role' => $request->role,
+            'selected_subjects' => $request->selected_subjects,
+        ]);
+
         $keyword = $request->keyword;
         $category = $request->category;
         $updown = $request->updown;
         $gender = $request->sex;
         $role = $request->role;
-        $subjects = null;// ここで検索時の科目を受け取る
+        $subjects = $request->selected_subjects;
         $userFactory = new SearchResultFactories();
         $users = $userFactory->initializeUsers($keyword, $category, $updown, $gender, $role, $subjects);
-        $subjects = Subjects::all();
-        return view('authenticated.users.search', compact('users', 'subjects'));
+        $allSubjects = Subjects::all(); // 選択科目の表示用
+        return view('authenticated.users.search', compact('users', 'allSubjects', 'subjects'));
     }
 
     public function userProfile($id){
