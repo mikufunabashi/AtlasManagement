@@ -15,15 +15,7 @@ class UsersController extends Controller
 {
 
     public function showUsers(Request $request){
-        // 検索条件をログに記録する
-        \Log::info('Received search request', [
-            'keyword' => $request->keyword,
-            'category' => $request->category,
-            'updown' => $request->updown,
-            'gender' => $request->sex,
-            'role' => $request->role,
-            'selected_subjects' => $request->selected_subjects,
-        ]);
+
 
         $keyword = $request->keyword;
         $category = $request->category;

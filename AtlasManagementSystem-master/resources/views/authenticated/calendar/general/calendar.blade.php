@@ -7,7 +7,8 @@
 
       <p class="text-center">{{ $calendar->getTitle() }}</p>
       <div class="">
-        {!! $calendar->render() !!}
+        <!-- カレンダーグレーにする -->
+        {!! $calendar->render(['past_days' => true]) !!}
       </div>
     </div>
     <div class="text-right w-75 m-auto">
