@@ -68,6 +68,7 @@ class CalendarView{
         }
         $html[] = $day->getDate();
         $html[] = '</td>';
+
       }
       $html[] = '</tr>';
     }
@@ -80,7 +81,7 @@ class CalendarView{
     return implode('', $html);
   }
 
-  protected function getWeeks(){
+  public function getWeeks(){
     $weeks = [];
     $firstDay = $this->carbon->copy()->firstOfMonth();
     $lastDay = $this->carbon->copy()->lastOfMonth();
