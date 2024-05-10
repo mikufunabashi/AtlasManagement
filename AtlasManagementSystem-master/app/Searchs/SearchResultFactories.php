@@ -36,12 +36,8 @@ class SearchResultFactories{
             $query->whereIn('subjects.id', $subjects); // 'subjects' テーブルの 'id' カラムを指定
         })->pluck('users.id')->toArray(); // 'users' テーブルの 'id' カラムを指定
 
-
         // ユーザーIDに基づいてユーザーを取得
         $users = User::whereIn('id', $userIds);
-
-        // その他の条件があれば適用
-        // 例: $users->where('name', 'like', '%'.$keyword.'%')->where('category', $category)->orderBy('created_at', $updown)->where('gender', $gender)->where('role', $role);
 
         // ユーザーを取得し、結果を返す
         return $users->get();

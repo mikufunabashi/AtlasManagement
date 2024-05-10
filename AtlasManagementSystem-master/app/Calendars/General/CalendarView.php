@@ -37,39 +37,48 @@ class CalendarView{
 
       $days = $week->getDays();
       foreach($days as $day){
-        $startDay = $this->carbon->copy()->format("Y-m-01");
-        $toDay = $this->carbon->copy()->format("Y-m-d");
+        $startDay = $this->carbon->copy()->startOfMonth();
+        $toDay = $this->carbon->copy()->endOfMonth();
 
-        if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){
-          $html[] = '<td class="calendar-td">';
-        }else{
-          $html[] = '<td class="calendar-td '.$day->getClassName().'">';
-        }
+        // 日付が過去の場合は、"past-day" クラスを適用する
+        $isPast = Carbon::parse($day->everyDay())->lt(Carbon::today());
+
+        // 日付のHTML要素を生成する部分
+        $html[] = '<td class="calendar-td ' . ($isPast ? 'past-day' : '') . '">';
+
+        // 日付のレンダリング
         $html[] = $day->render();
 
-        if(in_array($day->everyDay(), $day->authReserveDay())){
-          $reservePart = $day->authReserveDate($day->everyDay())->first()->setting_part;
-          if($reservePart == 1){
-            $reservePart = "リモ1部";
-          }else if($reservePart == 2){
-            $reservePart = "リモ2部";
-          }else if($reservePart == 3){
-            $reservePart = "リモ3部";
-          }
-          if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){
-            $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px"></p>';
-            $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
-          }else{
-            $html[] = '<button type="submit" class="btn btn-danger p-0 w-75" name="delete_date" style="font-size:12px" value="'. $day->authReserveDate($day->everyDay())->first()->setting_reserve .'">'. $reservePart .'</button>';
-            $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
-          }
-        }else{
-          $html[] = $day->selectPart($day->everyDay());
+        // 過去の日付の場合
+        if ($isPast) {
+            // 予約があるかチェック
+            if (in_array($day->everyDay(), $day->authReserveDay())) {
+                $reservePart = $day->authReserveDate($day->everyDay())->first()->setting_part;
+                if ($reservePart == 1) {
+                    $reservePart = "リモ1部";
+                } else if ($reservePart == 2) {
+                    $reservePart = "リモ2部";
+                } else if ($reservePart == 3) {
+                    $reservePart = "リモ3部";
+                }
+                // 予約した部を表示
+                $html[] = '<span class="status">予約部: ' . $reservePart . '</span>';
+            } else {
+                // 予約がない場合は受付終了を表示
+                $html[] = '<span class="status">受付終了</span>';
+            }
+        } else {
+            // 過去でない場合は、選択肢を表示
+            $html[] = $day->selectPart($day->everyDay());
         }
+
+
+        // 日付の表示
         $html[] = $day->getDate();
         $html[] = '</td>';
-
       }
+
+
       $html[] = '</tr>';
     }
     $html[] = '</tbody>';
@@ -89,6 +98,11 @@ class CalendarView{
     $weeks[] = $week;
     $tmpDay = $firstDay->copy()->addDay(7)->startOfWeek();
     while($tmpDay->lte($lastDay)){
+      // 過去の日付は除外する
+        if ($tmpDay->isPast()) {
+            $tmpDay->addDay(1);
+            continue;
+        }
       $week = new CalendarWeek($tmpDay, count($weeks));
       $weeks[] = $week;
       $tmpDay->addDay(7);

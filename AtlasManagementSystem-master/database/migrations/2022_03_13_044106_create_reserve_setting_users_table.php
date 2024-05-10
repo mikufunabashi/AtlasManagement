@@ -13,6 +13,7 @@ class CreateReserveSettingUsersTable extends Migration
      */
     public function up()
     {
+        // 🌟予約枠とユーザーの関係を表す、こっちは部数や枠数に応じた予約？
         Schema::create('reserve_setting_users', function (Blueprint $table) {
             $table->integer('id')->autoIncrement()->comment('id');
             $table->integer('user_id')->comment('ユーザーid');

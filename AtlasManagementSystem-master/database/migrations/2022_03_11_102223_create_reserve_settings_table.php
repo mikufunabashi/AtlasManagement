@@ -13,6 +13,7 @@ class CreateReserveSettingsTable extends Migration
      */
     public function up()
     {
+        // 予約枠などの管理のためのテーブル
         Schema::create('reserve_settings', function (Blueprint $table) {
             $table->integer('id')->autoIncrement()->comment('id');
             $table->date('setting_reserve')->comment('開講日');

@@ -13,6 +13,7 @@ class CreateCalendarUsers extends Migration
      */
     public function up()
     {
+        // 予約とユーザーのつながりを表してる、こっちは枠数とは関係なくただ予約してるかどうかのテーブル？
         Schema::create('calendar_users', function (Blueprint $table) {
             $table->integer('id')->autoIncrement()->comment('id');
             $table->integer('user_id')->index()->comment('ユーザーid');

@@ -13,6 +13,7 @@ class CreateCalendarsTable extends Migration
      */
     public function up()
     {
+        // 予約内容を表すテーブル
         Schema::create('calendars', function (Blueprint $table) {
             $table->integer('id')->autoIncrement()->comment('id');
             $table->date('reserve_date')->index('reserve_day')->comment('予約日');

@@ -6,10 +6,10 @@
     <div class="w-75 m-auto border" style="border-radius:5px;">
 
       <p class="text-center">{{ $calendar->getTitle() }}</p>
-      <div class="">
-        <!-- カレンダーグレーにする -->
-        {!! $calendar->render(['past_days' => true]) !!}
-      </div>
+        <div class="">
+         {!! $calendar->render() !!}
+        </div>
+
     </div>
     <div class="text-right w-75 m-auto">
       <input type="submit" class="btn btn-primary" value="予約する" form="reserveParts">

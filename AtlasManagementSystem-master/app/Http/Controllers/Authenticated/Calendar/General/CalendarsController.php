@@ -8,6 +8,7 @@ use App\Calendars\General\CalendarView;
 use App\Models\Calendars\ReserveSettings;
 use App\Models\Calendars\Calendar;
 use App\Models\USers\User;
+use Carbon\Carbon;
 use Auth;
 use DB;
 
@@ -15,7 +16,8 @@ class CalendarsController extends Controller
 {
     public function show(){
         $calendar = new CalendarView(time());
-        return view('authenticated.calendar.general.calendar', compact('calendar'));
+        $weeks = $calendar->getWeeks();
+        return view('authenticated.calendar.general.calendar', compact('calendar', 'weeks'));
     }
 
     public function reserve(Request $request){
@@ -35,4 +37,5 @@ class CalendarsController extends Controller
         }
         return redirect()->route('calendar.general.show', ['user_id' => Auth::id()]);
     }
+
 }
