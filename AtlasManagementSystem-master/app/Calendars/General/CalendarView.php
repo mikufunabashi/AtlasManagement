@@ -98,11 +98,6 @@ class CalendarView{
     $weeks[] = $week;
     $tmpDay = $firstDay->copy()->addDay(7)->startOfWeek();
     while($tmpDay->lte($lastDay)){
-      // 過去の日付は除外する
-        if ($tmpDay->isPast()) {
-            $tmpDay->addDay(1);
-            continue;
-        }
       $week = new CalendarWeek($tmpDay, count($weeks));
       $weeks[] = $week;
       $tmpDay->addDay(7);
