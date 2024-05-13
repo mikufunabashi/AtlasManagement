@@ -3,6 +3,7 @@ namespace App\Calendars\General;
 
 use App\Models\Calendars\ReserveSettings;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Auth;
 
 class CalendarWeekDay{

@@ -49,29 +49,48 @@ class CalendarView{
         // 日付のレンダリング
         $html[] = $day->render();
 
-        // 過去の日付の場合
-        if ($isPast) {
-            // 予約があるかチェック
-            if (in_array($day->everyDay(), $day->authReserveDay())) {
-                $reservePart = $day->authReserveDate($day->everyDay())->first()->setting_part;
-                if ($reservePart == 1) {
-                    $reservePart = "リモ1部";
-                } else if ($reservePart == 2) {
-                    $reservePart = "リモ2部";
-                } else if ($reservePart == 3) {
-                    $reservePart = "リモ3部";
-                }
-                // 予約した部を表示
-                $html[] = '<span class="status">予約部: ' . $reservePart . '</span>';
-            } else {
-                // 予約がない場合は受付終了を表示
-                $html[] = '<span class="status">受付終了</span>';
-            }
-        } else {
-            // 過去でない場合は、選択肢を表示
-            $html[] = $day->selectPart($day->everyDay());
-        }
-
+          // 日付が過去の場合
+          if ($isPast) {
+              // 予約があるかチェック
+              if (in_array($day->everyDay(), $day->authReserveDay())) {
+                  // 予約がある場合の処理
+                  $reservePart = $day->authReserveDate($day->everyDay())->first()->setting_part;
+                  if ($reservePart == 1) {
+                      $reservePart = "リモ1部";
+                  } else if ($reservePart == 2) {
+                      $reservePart = "リモ2部";
+                  } else if ($reservePart == 3) {
+                      $reservePart = "リモ3部";
+                  }
+                  // 予約した部を表示
+                  $html[] = '<span class="status">予約部: ' . $reservePart . '</span>';
+                  $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
+              } else {
+                  // 予約がない場合は受付終了を表示
+                  $html[] = '<span class="status">受付終了</span>';
+                  $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
+              }
+          } else {
+              // 過去でない場合の処理,🌟次の日また確認
+              if (in_array($day->everyDay(), $day->authReserveDay())) {
+                  // 予約がある場合の処理
+                  $reservePart = $day->authReserveDate($day->everyDay())->first()->setting_part;
+                  if ($reservePart == 1) {
+                      $reservePart = "リモ1部";
+                  } else if ($reservePart == 2) {
+                      $reservePart = "リモ2部";
+                  } else if ($reservePart == 3) {
+                      $reservePart = "リモ3部";
+                  }
+                  // 予約完了ボタンを表示
+                  $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
+                  $html[] = '<button type="submit" class="btn btn-danger p-0 w-75" name="delete_date" style="font-size:12px" value="'. $day->authReserveDate($day->everyDay())->first()->setting_reserve .'">'. $reservePart .'</button>';
+              } else {
+                  // 予約がない場合の処理
+                  $html[] = $day->selectPart($day->everyDay());
+                  // $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
+              }
+          }
 
         // 日付の表示
         $html[] = $day->getDate();
