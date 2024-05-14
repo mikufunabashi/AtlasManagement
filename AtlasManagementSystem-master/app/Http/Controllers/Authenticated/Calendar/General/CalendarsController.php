@@ -17,6 +17,9 @@ class CalendarsController extends Controller
     public function show(){
         $calendar = new CalendarView(time());
         $weeks = $calendar->getWeeks();
+        $reservations = ReserveSettings::with('users')->whereHas('users', function($query) {
+            $query->where('user_id', Auth::id());
+        })->get();
         return view('authenticated.calendar.general.calendar', compact('calendar', 'weeks'));
     }
 
@@ -38,5 +41,18 @@ class CalendarsController extends Controller
         }
         return redirect()->route('calendar.general.show', ['user_id' => Auth::id()]);
     }
+
+    // キャンセル処理のメソッドを追加
+    public function delete($id)
+    {
+        $reservation = ReserveSettings::find($id);
+        if ($reservation) {
+            $reservation->users()->detach(Auth::id()); // ユーザーと予約の関連を削除
+            $reservation->delete(); // 予約を削除
+        }
+        return redirect()->route('calendar.general.show', ['user_id' => Auth::id()]);
+    }
+
+
 
 }

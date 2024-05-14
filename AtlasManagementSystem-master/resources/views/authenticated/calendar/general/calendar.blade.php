@@ -16,25 +16,55 @@
     </div>
   </div>
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalTitle"></h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <!-- 予約情報 -->
-            <p>予約日: <span id="reserveDate"></span></p>
-            <p>予約時間: <span id="reserveTime"></span></p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-            <!-- ここにキャンセルボタンを追加する場合は追記 -->
-          </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle"></h5>
+            </div>
+            <div class="modal-body">
+                <!-- 予約情報 -->
+                <p>予約日: <span id="reserveDate"></span></p>
+                <p>予約時間: <span id="reserveTime"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                <button type="button" class="btn btn-danger" onclick="cancelReservation()">キャンセル</button>
+            </div>
         </div>
-      </div>
     </div>
+  </div>
 </div>
+<script>
+  // モーダルを表示する関数
+  function showModal(reserveDate, reserveTime) {
+    // モーダルのタイトルを設定
+    document.getElementById('modalTitle').innerText = '予約情報';
+
+    // 予約日と予約時間を表示する要素を更新
+    document.getElementById('reserveDate').innerText = reserveDate;
+    document.getElementById('reserveTime').innerText = reserveTime;
+
+    // モーダルを表示
+    $('#exampleModal').modal('show');
+  }
+
+  // 予約キャンセル関数
+  function cancelReservation(id) {
+    $.ajax({
+      url: '{{ url('/delete/calendar') }}/' + id,
+      method: 'POST',
+      data: {
+        _token: '{{ csrf_token() }}'
+      },
+      success: function(response) {
+        alert('予約がキャンセルされました。');
+        location.reload(); // ページをリロードして更新
+      },
+      error: function(error) {
+        console.error('Error:', error);
+        alert('予約のキャンセルに失敗しました。');
+      }
+    });
+  }
+</script>
 @endsection
