@@ -15,5 +15,26 @@
       <input type="submit" class="btn btn-primary" value="予約する" form="reserveParts">
     </div>
   </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- 予約情報 -->
+            <p>予約日: <span id="reserveDate"></span></p>
+            <p>予約時間: <span id="reserveTime"></span></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+            <!-- ここにキャンセルボタンを追加する場合は追記 -->
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
 @endsection

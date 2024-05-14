@@ -39,5 +39,6 @@
   <script src="{{ asset('js/bulletin.js') }}" rel="stylesheet"></script>
   <script src="{{ asset('js/user_search.js') }}" rel="stylesheet"></script>
   <script src="{{ asset('js/calendar.js') }}" rel="stylesheet"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
 </html>

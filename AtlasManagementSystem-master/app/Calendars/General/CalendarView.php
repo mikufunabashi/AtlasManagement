@@ -84,7 +84,8 @@ class CalendarView{
                   }
                   // 予約完了ボタンを表示
                   $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
-                  $html[] = '<button type="submit" class="btn btn-danger p-0 w-75" name="delete_date" style="font-size:12px" value="'. $day->authReserveDate($day->everyDay())->first()->setting_reserve .'">'. $reservePart .'</button>';
+                  // $html[] = '<button type="submit" class="btn btn-danger p-0 w-75" name="delete_date" style="font-size:12px" value="'. $day->authReserveDate($day->everyDay())->first()->setting_reserve .'">'. $reservePart .'</button>';
+                  $html[] = '<button type="button" class="btn btn-danger p-0 w-75" onclick="showModal(\'' . $day->everyDay() . '\', \'' . $reservePart . '\')" style="font-size:12px">' . $reservePart . '</button>';
               } else {
                   // 予約がない場合の処理
                   $html[] = $day->selectPart($day->everyDay());
@@ -124,3 +125,19 @@ class CalendarView{
     return $weeks;
   }
 }
+?>
+
+<script>
+  // モーダルを表示する関数
+  function showModal(reserveDate, reserveTime) {
+    // モーダルのタイトルを設定
+    document.getElementById('modalTitle').innerText = '予約情報';
+
+    // 予約日と予約時間を表示する要素を更新
+    document.getElementById('reserveDate').innerText = reserveDate;
+    document.getElementById('reserveTime').innerText = reserveTime;
+
+    // モーダルを表示
+    $('#exampleModal').modal('show');
+  }
+</script>
