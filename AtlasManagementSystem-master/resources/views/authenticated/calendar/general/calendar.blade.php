@@ -27,8 +27,9 @@
                 <p>予約時間: <span id="reserveTime"></span></p>
             </div>
             <div class="modal-footer">
+              <!-- 🌟予約のIDの取り方が話kらない、時間と部数は別のテーブルで消したいIDはreserve_setting_usersだからどうするんだ？ -->
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-                <button type="button" class="btn btn-danger" onclick="cancelReservation()">キャンセル</button>
+                <button type="button" class="btn btn-danger" id="cancelButton">キャンセル</button>
             </div>
         </div>
     </div>
@@ -36,14 +37,15 @@
 </div>
 <script>
   // モーダルを表示する関数
-  function showModal(reserveDate, reserveTime) {
+  function showModal(reserveDate, reserveTime, id) {
     // モーダルのタイトルを設定
     document.getElementById('modalTitle').innerText = '予約情報';
 
     // 予約日と予約時間を表示する要素を更新
     document.getElementById('reserveDate').innerText = reserveDate;
     document.getElementById('reserveTime').innerText = reserveTime;
-
+    reservationId = id;
+    document.getElementById('cancelButton').setAttribute('onclick', `cancelReservation(${id})`);
     // モーダルを表示
     $('#exampleModal').modal('show');
   }
@@ -66,5 +68,6 @@
       }
     });
   }
+
 </script>
 @endsection

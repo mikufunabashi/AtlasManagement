@@ -14,14 +14,24 @@ use DB;
 
 class CalendarsController extends Controller
 {
-    public function show(){
+    // public function show(){
+    //     $calendar = new CalendarView(time());
+    //     $weeks = $calendar->getWeeks();
+    //     $reservations = ReserveSettings::with('users')->whereHas('users', function($query) {
+    //         $query->where('user_id', Auth::id());
+    //     })->get();
+    //     return view('authenticated.calendar.general.calendar', compact('calendar', 'weeks'));
+    // }
+    public function show($user_id){
         $calendar = new CalendarView(time());
         $weeks = $calendar->getWeeks();
-        $reservations = ReserveSettings::with('users')->whereHas('users', function($query) {
-            $query->where('user_id', Auth::id());
-        })->get();
-        return view('authenticated.calendar.general.calendar', compact('calendar', 'weeks'));
+        $reservations = ReserveSettings::with(['users' => function($query) {
+            $query->select('reserve_setting_users.id'); // usersテーブルのidを指定
+        }])->get();
+        // dd($reservations);
+        return view('authenticated.calendar.general.calendar', compact('calendar', 'weeks', 'reservations'));
     }
+
 
     public function reserve(Request $request){
         DB::beginTransaction();
@@ -43,15 +53,22 @@ class CalendarsController extends Controller
     }
 
     // キャンセル処理のメソッドを追加
-    public function delete($id)
-    {
-        $reservation = ReserveSettings::find($id);
-        if ($reservation) {
-            $reservation->users()->detach(Auth::id()); // ユーザーと予約の関連を削除
-            $reservation->delete(); // 予約を削除
-        }
+    // public function delete($id)
+    // {
+    //     $reservation = ReserveSettings::find($id);
+    //     if ($reservation) {
+    //         // $reservation->users()->detach(Auth::id()); // ユーザーと予約の関連を削除
+    //         $reservation->delete(); // 予約を削除
+    //     }
+    //     return redirect()->route('calendar.general.show', ['user_id' => Auth::id()]);
+    // }
+
+    public function delete($id) {
+        DB::table('reserve_setting_users')->where('id', $id)->delete();
+        dd($id);
         return redirect()->route('calendar.general.show', ['user_id' => Auth::id()]);
     }
+
 
 
 

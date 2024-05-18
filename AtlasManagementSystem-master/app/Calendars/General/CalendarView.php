@@ -63,7 +63,7 @@ class CalendarView{
                       $reservePart = "リモ3部";
                   }
                   // 予約した部を表示
-                  $html[] = '<span class="status">予約部: ' . $reservePart . '</span>';
+                  $html[] = '<span class="status">' . $reservePart . '</span>';
                   $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
               } else {
                   // 予約がない場合は受付終了を表示
