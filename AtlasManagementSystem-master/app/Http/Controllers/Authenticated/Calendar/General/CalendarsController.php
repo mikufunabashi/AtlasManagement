@@ -14,14 +14,6 @@ use DB;
 
 class CalendarsController extends Controller
 {
-    // public function show(){
-    //     $calendar = new CalendarView(time());
-    //     $weeks = $calendar->getWeeks();
-    //     $reservations = ReserveSettings::with('users')->whereHas('users', function($query) {
-    //         $query->where('user_id', Auth::id());
-    //     })->get();
-    //     return view('authenticated.calendar.general.calendar', compact('calendar', 'weeks'));
-    // }
     public function show($user_id){
         $calendar = new CalendarView(time());
         $weeks = $calendar->getWeeks();
@@ -53,21 +45,46 @@ class CalendarsController extends Controller
     }
 
     // キャンセル処理のメソッドを追加
-    // public function delete($id)
-    // {
-    //     $reservation = ReserveSettings::find($id);
-    //     if ($reservation) {
-    //         // $reservation->users()->detach(Auth::id()); // ユーザーと予約の関連を削除
-    //         $reservation->delete(); // 予約を削除
-    //     }
-    //     return redirect()->route('calendar.general.show', ['user_id' => Auth::id()]);
-    // }
 
-    public function delete($id) {
-        DB::table('reserve_setting_users')->where('id', $id)->delete();
-        dd($id);
+   public function delete(Request $request) {
+        // dd([
+        //     'user_id' => Auth::id(),
+        //     'reserveDate' => $request->reserveDate,
+        //     'reservePartNumber' => $request->reservePartNumber,
+        // ]);
+        DB::beginTransaction();
+        try {
+            $user_id = Auth::id();
+            $reserve_date = $request->reserveDate;
+            $reserve_part = $request->reservePartNumber;
+
+            // ReserveSettingsのIDを取得
+            $reserve_settings = ReserveSettings::where('setting_reserve', $reserve_date)
+                                                ->where('setting_part', $reserve_part)
+                                                ->first();
+
+            if ($reserve_settings) {
+                // reserve_setting_usersテーブルのIDを取得して削除
+                $reserve_setting_user = DB::table('reserve_setting_users')
+                                            ->where('reserve_setting_id', $reserve_settings->id)
+                                            ->where('user_id', $user_id)
+                                            ->first();
+
+                if ($reserve_setting_user) {
+                    DB::table('reserve_setting_users')->where('id', $reserve_setting_user->id)->delete();
+
+                    // 予約の人数を元に戻す
+                    $reserve_settings->increment('limit_users');
+                }
+            }
+
+            DB::commit();
+        } catch(\Exception $e) {
+            DB::rollback();
+        }
         return redirect()->route('calendar.general.show', ['user_id' => Auth::id()]);
     }
+
 
 
 

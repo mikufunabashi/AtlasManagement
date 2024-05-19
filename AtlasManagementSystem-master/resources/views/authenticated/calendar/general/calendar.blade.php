@@ -24,12 +24,17 @@
             <div class="modal-body">
                 <!-- 予約情報 -->
                 <p>予約日: <span id="reserveDate"></span></p>
-                <p>予約時間: <span id="reserveTime"></span></p>
+                <p>予約パート: <span id="reservePart"></span></p>
             </div>
             <div class="modal-footer">
-              <!-- 🌟予約のIDの取り方が話kらない、時間と部数は別のテーブルで消したいIDはreserve_setting_usersだからどうするんだ？ -->
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-                <button type="button" class="btn btn-danger" id="cancelButton">キャンセル</button>
+                <form id="cancelForm" action="{{ route('deleteParts') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="reserveDate" id="formReserveDate">
+                    <input type="hidden" name="reservePartNumber" id="formReservePart">
+                    <button type="submit" class="btn btn-danger" id="cancelButton">キャンセル</button>
+                </form>
+
             </div>
         </div>
     </div>
@@ -37,36 +42,32 @@
 </div>
 <script>
   // モーダルを表示する関数
-  function showModal(reserveDate, reserveTime, id) {
-    // モーダルのタイトルを設定
-    document.getElementById('modalTitle').innerText = '予約情報';
+  function showModal(reserveDate, reservePart, part) {
+     console.log('reserveDate:', reserveDate); // デバッグ用
+    console.log('reservePart:', reservePart); // デバッグ用
 
-    // 予約日と予約時間を表示する要素を更新
-    document.getElementById('reserveDate').innerText = reserveDate;
-    document.getElementById('reserveTime').innerText = reserveTime;
-    reservationId = id;
-    document.getElementById('cancelButton').setAttribute('onclick', `cancelReservation(${id})`);
-    // モーダルを表示
-    $('#exampleModal').modal('show');
-  }
+    // 予約パートを数値に変換
+    let reservePartNumber;
+    if (reservePart === "リモ1部") {
+        reservePartNumber = 1;
+    } else if (reservePart === "リモ2部") {
+        reservePartNumber = 2;
+    } else if (reservePart === "リモ3部") {
+        reservePartNumber = 3;
+    }
+      // モーダルのタイトルを設定
+      document.getElementById('modalTitle').innerText = '予約情報';
 
-  // 予約キャンセル関数
-  function cancelReservation(id) {
-    $.ajax({
-      url: '{{ url('/delete/calendar') }}/' + id,
-      method: 'POST',
-      data: {
-        _token: '{{ csrf_token() }}'
-      },
-      success: function(response) {
-        alert('予約がキャンセルされました。');
-        location.reload(); // ページをリロードして更新
-      },
-      error: function(error) {
-        console.error('Error:', error);
-        alert('予約のキャンセルに失敗しました。');
-      }
-    });
+      // 予約日と予約パートを表示する要素を更新
+      document.getElementById('reserveDate').innerText = reserveDate;
+      document.getElementById('reservePart').innerText = reservePart;
+
+      // フォームのhiddenフィールドにデータを設定
+      document.getElementById('formReserveDate').value = reserveDate;
+      document.getElementById('formReservePart').value = reservePartNumber;
+
+      // モーダルを表示
+      $('#exampleModal').modal('show');
   }
 
 </script>
