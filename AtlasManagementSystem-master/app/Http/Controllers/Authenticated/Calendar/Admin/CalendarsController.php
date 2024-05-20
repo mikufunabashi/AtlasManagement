@@ -19,10 +19,26 @@ class CalendarsController extends Controller
         return view('authenticated.calendar.admin.calendar', compact('calendar'));
     }
 
+    // public function reserveDetail($date, $part){
+    //     $reservePersons = ReserveSettings::with('users')->where('setting_reserve', $date)->where('setting_part', $part)->get();
+    //     return view('authenticated.calendar.admin.reserve_detail', compact('reservePersons', 'date', 'part'));
+    // }
     public function reserveDetail($date, $part){
-        $reservePersons = ReserveSettings::with('users')->where('setting_reserve', $date)->where('setting_part', $part)->get();
-        return view('authenticated.calendar.admin.reserve_detail', compact('reservePersons', 'date', 'part'));
+        $reservePersons = ReserveSettings::with(['users' => function ($query) {
+                                            $query->select('users.id', DB::raw("CONCAT(over_name, ' ', under_name) AS name"));
+                                        }])
+                                    ->where('setting_reserve', $date)
+                                    ->where('setting_part', $part)
+                                    ->get();
+
+        $users = $reservePersons->flatMap->users;
+
+        return view('authenticated.calendar.admin.reserve_detail', compact('users', 'date', 'part'));
     }
+
+
+
+
 
     public function reserveSettings(){
         $calendar = new CalendarSettingView(time());

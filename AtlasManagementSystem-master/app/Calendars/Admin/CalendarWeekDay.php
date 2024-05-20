@@ -23,25 +23,12 @@ class CalendarWeekDay{
     return $this->carbon->format("Y-m-d");
   }
 
-  function dayPartCounts($ymd){
+  function dayPartCounts($ymd, $days){
     $html = [];
     $one_part_frame = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '1')->first();
     $two_part_frame = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '2')->first();
     $three_part_frame = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '3')->first();
 
-    // $html[] = '<div class="text-left">';
-    // if($one_part){
-    //   $html[] = '<p class="day_part m-0 pt-1">1部</p>';
-    // }
-    // if($two_part){
-    //   $html[] = '<p class="day_part m-0 pt-1">2部</p>';
-    // }
-    // if($three_part){
-    //   $html[] = '<p class="day_part m-0 pt-1">3部</p>';
-    // }
-    // $html[] = '</div>';
-
-    // return implode("", $html);
     if($one_part_frame){
         $one_part_frame = $one_part_frame->limit_users;
     } else {
@@ -61,24 +48,11 @@ class CalendarWeekDay{
     }
 
     $html[] = '<div class="text-left">';
-    if($one_part_frame !== '0'){
-        $html[] = '<p class="day_part m-0 pt-1">1部 ' . $one_part_frame . '枠</p>';
-    } else {
-        $html[] = '<p class="day_part m-0 pt-1">1部 0枠</p>';
-    }
-
-    if($two_part_frame !== '0'){
-        $html[] = '<p class="day_part m-0 pt-1">2部 ' . $two_part_frame . '枠</p>';
-    } else {
-        $html[] = '<p class="day_part m-0 pt-1">2部 0枠</p>';
-    }
-
-    if($three_part_frame !== '0'){
-        $html[] = '<p class="day_part m-0 pt-1">3部 ' . $three_part_frame . '枠</p>';
-    } else {
-        $html[] = '<p class="day_part m-0 pt-1">3部 0枠</p>';
-    }
+    $html[] = '<div><a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => '1']) . '" class="day_part m-0 pt-1">1部</a> ' . $one_part_frame . '枠</div>';
+    $html[] = '<div><a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => '2']) . '" class="day_part m-0 pt-1">2部</a> ' . $two_part_frame . '枠</div>';
+    $html[] = '<div><a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => '3']) . '" class="day_part m-0 pt-1">3部</a> ' . $three_part_frame . '枠</div>';
     $html[] = '</div>';
+
 
     return implode("", $html);
   }

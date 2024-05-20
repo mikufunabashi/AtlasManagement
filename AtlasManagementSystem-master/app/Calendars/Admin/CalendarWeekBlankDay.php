@@ -15,9 +15,10 @@ class CalendarWeekBlankDay extends CalendarWeekDay{
     return '';
   }
 
-  function dayPartCounts($ymd = null){
+  function dayPartCounts($ymd, $date = null){
     return '';
-  }
+}
+
 
   function dayNumberAdjustment(){
     return '';
