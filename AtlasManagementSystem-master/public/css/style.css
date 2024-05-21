@@ -16,6 +16,15 @@ li {
   list-style: none;
 }
 
+/* ログイン画面 */
+.border {
+  background-color: #fff;
+}
+
+.input-background-color {
+  background-color: #fff;
+}
+
 /* サイドバー */
 .sidebar {
   width: 150px;

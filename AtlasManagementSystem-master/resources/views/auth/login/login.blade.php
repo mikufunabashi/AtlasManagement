@@ -12,9 +12,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&family=Oswald:wght@200&display=swap" rel="stylesheet">
   <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 </head>
-<body>
+<body class="all_content">
 
   <!-- {!! Debugbar::render() !!} Laravelデバッグバーを表示する記述-->
+  <div class="text-center pt-3">
+      <img src="{{ asset('image/atlas-black.png') }}" alt="ロゴ" style="max-width: 100px;">
+    </div>
   <form action="{{ route('loginPost') }}" method="POST">
     <div class="w-100 vh-100 d-flex" style="align-items:center; justify-content:center;">
       <div class="border vh-50 w-25">

@@ -25,34 +25,28 @@ class CalendarWeekDay{
 
   function dayPartCounts($ymd, $days){
     $html = [];
-    $one_part_frame = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '1')->first();
-    $two_part_frame = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '2')->first();
-    $three_part_frame = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '3')->first();
+    $one_part_reservations = ReserveSettings::withCount('users')
+                                            ->where('setting_reserve', $ymd)
+                                            ->where('setting_part', '1')
+                                            ->first();
+    $two_part_reservations = ReserveSettings::withCount('users')
+                                            ->where('setting_reserve', $ymd)
+                                            ->where('setting_part', '2')
+                                            ->first();
+    $three_part_reservations = ReserveSettings::withCount('users')
+                                              ->where('setting_reserve', $ymd)
+                                              ->where('setting_part', '3')
+                                              ->first();
 
-    if($one_part_frame){
-        $one_part_frame = $one_part_frame->limit_users;
-    } else {
-        $one_part_frame = '0';
-    }
-
-    if($two_part_frame){
-        $two_part_frame = $two_part_frame->limit_users;
-    } else {
-        $two_part_frame = '0';
-    }
-
-    if($three_part_frame){
-        $three_part_frame = $three_part_frame->limit_users;
-    } else {
-        $three_part_frame = '0';
-    }
+    $one_part_count = $one_part_reservations ? $one_part_reservations->users_count : 0;
+    $two_part_count = $two_part_reservations ? $two_part_reservations->users_count : 0;
+    $three_part_count = $three_part_reservations ? $three_part_reservations->users_count : 0;
 
     $html[] = '<div class="text-left">';
-    $html[] = '<div><a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => '1']) . '" class="day_part m-0 pt-1">1部</a> ' . $one_part_frame . '枠</div>';
-    $html[] = '<div><a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => '2']) . '" class="day_part m-0 pt-1">2部</a> ' . $two_part_frame . '枠</div>';
-    $html[] = '<div><a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => '3']) . '" class="day_part m-0 pt-1">3部</a> ' . $three_part_frame . '枠</div>';
+    $html[] = '<div><a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => '1']) . '" class="day_part m-0 pt-1">1部</a> ' . $one_part_count . '件</div>';
+    $html[] = '<div><a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => '2']) . '" class="day_part m-0 pt-1">2部</a> ' . $two_part_count . '件</div>';
+    $html[] = '<div><a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => '3']) . '" class="day_part m-0 pt-1">3部</a> ' . $three_part_count . '件</div>';
     $html[] = '</div>';
-
 
     return implode("", $html);
   }
