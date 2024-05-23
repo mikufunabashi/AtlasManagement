@@ -17,13 +17,25 @@ li {
 }
 
 /* ログイン画面 */
-.border {
-  background-color: #fff;
+.top-logo {
+  margin-bottom: 50px;
 }
 
-.input-background-color {
-  background-color: #fff;
+.top-logo img {
+  width: 150px;
 }
+
+.border {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 10px 10px 15px -10px;
+
+}
+
+.form-block {
+  width: 65%;
+}
+
 
 /* サイドバー */
 .sidebar {
