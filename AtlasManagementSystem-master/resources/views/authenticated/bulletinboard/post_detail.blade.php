@@ -1,32 +1,24 @@
 @extends('layouts.sidebar')
 @section('content')
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 <div class="vh-100 d-flex">
   <div class="w-50 mt-5">
     <div class="m-3 detail_container">
       <div class="p-3">
         <div class="detail_inner_head">
-          <div>
-          </div>
-          <div>
+            <div class="post_subcategories">
+              @foreach($post->subCategories as $subCategory)
+                <span class="post_sub">{{ $subCategory->sub_category }}</span>@if(!$loop->last), @endif
+              @endforeach
+            </div>
+            <div class="edit-buttons">
               @if(Auth::check() && $post->user_id == Auth::user()->id)
-                  <span class="edit-modal-open" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
-                  <a class="trashIcon" href="{{ route('post.delete', ['id' => $post->id]) }}" onclick="return confirm('こちらの投稿を削除してもよろしいでしょうか？')">
-                    <span class="icon-text">削除</span>
-                  </a>
-                  <!-- <a href="{{ route('post.delete', ['id' => $post->id]) }}">削除</a> -->
+                <span class="edit-modal-open btn-common btn-edit" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
+                <a class="trashIcon btn-common btn-delete" href="{{ route('post.delete', ['id' => $post->id]) }}" onclick="return confirm('こちらの投稿を削除してもよろしいでしょうか？')">
+                  <span class="icon-text">削除</span>
+                </a>
               @endif
-          </div>
+            </div>
         </div>
-
         <div class="contributor d-flex">
           <p>
             <span>{{ $post->user->over_name }}</span>
@@ -55,12 +47,17 @@
     </div>
   </div>
   <div class="w-50 p-3">
-    <div class="comment_container border m-5">
+    <div class="comment_container m-5">
       <div class="comment_area p-3">
+        @if($errors->has('comment'))
+            <span class="error_message">{{ $errors->first('comment') }}</span>
+          @endif
         <p class="m-0">コメントする</p>
         <textarea class="w-100" name="comment" form="commentRequest"></textarea>
         <input type="hidden" name="post_id" form="commentRequest" value="{{ $post->id }}">
-        <input type="submit" class="btn btn-primary" form="commentRequest" value="投稿">
+        <div class="btn-right">
+          <input type="submit" class="btn btn-primary" form="commentRequest" value="投稿">
+        </div>
         <form action="{{ route('comment.create') }}" method="post" id="commentRequest">{{ csrf_field() }}</form>
       </div>
     </div>
