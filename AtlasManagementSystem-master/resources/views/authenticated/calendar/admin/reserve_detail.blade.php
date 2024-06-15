@@ -10,17 +10,17 @@
       <table class="custom-table">
         <thead>
           <tr class="text-center header-row">
-            <th class="w-25">ID</th>
-            <th class="w-25">名前</th>
-            <th class="w-25">場所</th>
+            <th class="reserve_width1">ID</th>
+            <th class="reserve_width2">名前</th>
+            <th class="reserve_width3">場所</th>
           </tr>
         </thead>
         <tbody>
           @forelse($users as $user)
             <tr class="text-center data-row">
-              <td class="w-25">{{ $user->id }}</td>
-              <td class="w-25">{{ $user->name }}</td>
-              <td class="w-25">リモート</td>
+              <td class="reserve_width1">{{ $user->id }}</td>
+              <td class="reserve_width2">{{ $user->name }}</td>
+              <td class="reserve_width13">リモート</td>
             </tr>
           @empty
             <tr>

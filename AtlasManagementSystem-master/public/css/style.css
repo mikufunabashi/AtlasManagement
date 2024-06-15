@@ -234,6 +234,14 @@ li {
   width: 65%;
 }
 
+.reserve_width1 {
+  width: 15%;
+}
+
+.reserve_width2 {
+  width: 40%;
+}
+
 .custom-table1 {
   border-radius: 10px;
   overflow: hidden;
