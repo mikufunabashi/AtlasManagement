@@ -141,6 +141,7 @@ li {
 }
 
 /* トップページ */
+
 .user_status {
   padding: 20px 40px;
 }
@@ -158,6 +159,12 @@ li {
   height: auto;
 
 }
+
+.top-login1 {
+  margin-bottom: 30px;
+}
+
+
 
 /* スクール予約関連 */
 .day-blank {
@@ -178,10 +185,27 @@ li {
 
 .calendar-td {
   min-width: 100px;
+  border: 1px solid #E0E3E7;
+}
+
+.calendar .calendar-td1 {
+  padding: 5px 20px;
+  border: 1px solid #E0E3E7;
+}
+
+.tbody .calendar-td {
+  height: 110px;
+}
+
+.day_part1 {
+  width: 90px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .day_part {
-  color: #494949;
+  color: #06A9D2;
   font-size: 12px;
 }
 
@@ -201,11 +225,66 @@ li {
   width: 70%;
 }
 
+.count {
+  margin-right: 0;
+}
+
+/* 予約詳細 */
+.custom-table2 {
+  width: 65%;
+}
+
+.custom-table1 {
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+}
+
+.custom-table .header-row {
+  background-color: #06A9D2;
+  /* 濃い青 */
+  color: #fff;
+}
+
+.custom-table .data-row:nth-child(odd) {
+  background-color: #fff;
+  /* 薄い青1 */
+}
+
+.custom-table .data-row:nth-child(even) {
+  background-color: #E4F5F9;
+  /* 薄い青2 */
+}
+
 /* カレンダー */
 .past-day {
   color: #999;
   /* グレーにするための色指定 */
   /* その他のスタイル指定 */
+}
+
+.saturday {
+  color: #2200FF;
+}
+
+.sunday {
+  color: #FF003B;
+}
+
+.day-blank {
+  color: #494949;
 }
 
 /* モーダル */
@@ -567,9 +646,13 @@ li {
   transform: rotate(-135deg);
 }
 
-.arrow.open {
+/* .arrow.open {
   transform: rotate(45deg);
-  /* クリックで下向きの矢印に回転 */
+  /* クリックで下向きの矢印に回転
+} */
+
+.subject_edit.open .arrow {
+  transform: rotate(-135deg);
 }
 
 .category_input {
@@ -754,4 +837,36 @@ li {
   /* パディングを含む幅と高さを指定 */
   padding: 10px;
   /* パディングを追加 */
+}
+
+/* プロフィール画面 */
+.subject_edit {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.subject_edit span {
+  color: #06A9D2;
+  font-size: 15px;
+}
+
+.subject_edit_btn .arrow {
+  margin-bottom: 2px;
+  border: solid #06A9D2;
+  border-width: 0 2px 2px 0;
+}
+
+.subject_inner {
+  display: flex;
+  align-items: center;
+}
+
+.subject_item {
+  margin-right: 10px;
+}
+
+.subject_item label {
+  margin-bottom: 0px;
 }

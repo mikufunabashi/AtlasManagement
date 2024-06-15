@@ -17,19 +17,19 @@ class CalendarSettingView{
   public function render(){
     $html = [];
     $html[] = '<div class="calendar text-center">';
-    $html[] = '<table class="table m-auto border adjust-table">';
+    $html[] = '<table class="table">';
     $html[] = '<thead>';
     $html[] = '<tr>';
-    $html[] = '<th class="border">月</th>';
-    $html[] = '<th class="border">火</th>';
-    $html[] = '<th class="border">水</th>';
-    $html[] = '<th class="border">木</th>';
-    $html[] = '<th class="border">金</th>';
-    $html[] = '<th class="border">土</th>';
-    $html[] = '<th class="border">日</th>';
+    $html[] = '<th class="calendar-td">月</th>';
+    $html[] = '<th class="calendar-td">火</th>';
+    $html[] = '<th class="calendar-td">水</th>';
+    $html[] = '<th class="calendar-td">木</th>';
+    $html[] = '<th class="calendar-td">金</th>';
+    $html[] = '<th class="saturday calendar-td">土</th>';
+    $html[] = '<th class="sunday calendar-td">日</th>';
     $html[] = '</tr>';
     $html[] = '</thead>';
-    $html[] = '<tbody>';
+    $html[] = '<tbody class="tbody">';
     $weeks = $this->getWeeks();
 
     foreach($weeks as $week){
@@ -40,9 +40,9 @@ class CalendarSettingView{
         $toDay = $this->carbon->format("Y-m-d");
 
        if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){
-          $html[] = '<td class="past-day border">';
+          $html[] = '<td class="past-day calendar-td1">';
         }else{
-          $html[] = '<td class="border '.$day->getClassName().'">';
+          $html[] = '<td class="calendar-td1 '.$day->getClassName().'">';
         }
         $html[] = $day->render();
         $html[] = '<div class="adjust-area">';

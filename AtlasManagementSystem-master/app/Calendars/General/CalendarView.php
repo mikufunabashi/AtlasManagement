@@ -21,16 +21,16 @@ class CalendarView{
     $html[] = '<table class="table">';
     $html[] = '<thead>';
     $html[] = '<tr>';
-    $html[] = '<th>月</th>';
-    $html[] = '<th>火</th>';
-    $html[] = '<th>水</th>';
-    $html[] = '<th>木</th>';
-    $html[] = '<th>金</th>';
-    $html[] = '<th>土</th>';
-    $html[] = '<th>日</th>';
+    $html[] = '<th class="calendar-td">月</th>';
+    $html[] = '<th class="calendar-td">火</th>';
+    $html[] = '<th class="calendar-td">水</th>';
+    $html[] = '<th class="calendar-td">木</th>';
+    $html[] = '<th class="calendar-td">金</th>';
+    $html[] = '<th class="saturday calendar-td">土</th>';
+    $html[] = '<th class="sunday calendar-td">日</th>';
     $html[] = '</tr>';
     $html[] = '</thead>';
-    $html[] = '<tbody>';
+    $html[] = '<tbody class="tbody">';
     $weeks = $this->getWeeks();
     foreach($weeks as $week){
       $html[] = '<tr class="'.$week->getClassName().'">';
@@ -44,7 +44,7 @@ class CalendarView{
         $isPast = Carbon::parse($day->everyDay())->lt(Carbon::today());
 
         // 日付のHTML要素を生成する部分
-        $html[] = '<td class="calendar-td ' . ($isPast ? 'past-day' : '') . '">';
+        $html[] = '<td class="calendar-td ' . $day->getClassName() . ' ' . ($isPast ? 'past-day' : '') . '">';
 
         // 日付のレンダリング
         $html[] = $day->render();

@@ -19,7 +19,7 @@
       <div class="top-logo text-center pt-3">
         <img src="{{ asset('image/atlas-black.png') }}" alt="ロゴ">
       </div>
-      <div class="border vh-30 w-25">
+      <div class="border w-25 login_area">
         <div class="form-block m-auto pt-5">
           <label class="d-block m-0" style="font-size:13px;">メールアドレス</label>
           <div class="border-bottom border-primary w-100">
@@ -35,7 +35,7 @@
         <div class="top-login text-right">
           <input type="submit" class="btn btn-primary" value="ログイン">
         </div>
-        <div class="text-center">
+        <div class="text-center top-login1">
           <a href="{{ route('registerView') }}">新規登録</a>
         </div>
       </div>

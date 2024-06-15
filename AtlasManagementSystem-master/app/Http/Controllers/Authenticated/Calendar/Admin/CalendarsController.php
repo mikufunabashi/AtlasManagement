@@ -9,6 +9,7 @@ use App\Calendars\Admin\CalendarSettingView;
 use App\Models\Calendars\ReserveSettings;
 use App\Models\Calendars\Calendar;
 use App\Models\USers\User;
+use Carbon\Carbon;
 use Auth;
 use DB;
 
@@ -33,7 +34,10 @@ class CalendarsController extends Controller
 
         $users = $reservePersons->flatMap->users;
 
-        return view('authenticated.calendar.admin.reserve_detail', compact('users', 'date', 'part'));
+        // Carbonを使って日付をフォーマット
+        $formattedDate = Carbon::parse($date)->format('Y年n月j日');
+
+        return view('authenticated.calendar.admin.reserve_detail', compact('users', 'date', 'part','formattedDate'));
     }
 
 

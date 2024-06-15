@@ -50,7 +50,7 @@ class CalendarWeekDay{
      }
 
      $html = [];
-     $html[] = '<select name="getPart[]" class="border-primary" style="width:70px; border-radius:5px;" form="reserveParts">';
+     $html[] = '<select name="getPart[]" class="border-primary" style="width:80px; border-radius:5px;" form="reserveParts">';
      $html[] = '<option value="" selected></option>';
      if($one_part_frame == "0"){
        $html[] = '<option value="1" disabled>リモ1部(残り0枠)</option>';

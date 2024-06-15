@@ -43,9 +43,9 @@ class CalendarWeekDay{
     $three_part_count = $three_part_reservations ? $three_part_reservations->users_count : 0;
 
     $html[] = '<div class="text-left">';
-    $html[] = '<div><a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => '1']) . '" class="day_part m-0 pt-1">1部</a> ' . $one_part_count . '件</div>';
-    $html[] = '<div><a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => '2']) . '" class="day_part m-0 pt-1">2部</a> ' . $two_part_count . '件</div>';
-    $html[] = '<div><a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => '3']) . '" class="day_part m-0 pt-1">3部</a> ' . $three_part_count . '件</div>';
+    $html[] = '<div class="day_part1"><a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => '1']) . '" class="day_part m-0 pt-1">1部</a> <span class="count">' . $one_part_count . '</span></div>';
+    $html[] = '<div class="day_part1"><a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => '2']) . '" class="day_part m-0 pt-1">2部</a> <span class="count">' . $two_part_count . '</span></div>';
+    $html[] = '<div class="day_part1"><a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => '3']) . '" class="day_part m-0 pt-1">3部</a> <span class="count">' . $three_part_count . '</span></div>';
     $html[] = '</div>';
 
     return implode("", $html);
