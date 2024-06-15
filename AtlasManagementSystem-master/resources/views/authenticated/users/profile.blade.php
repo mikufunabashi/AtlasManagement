@@ -19,7 +19,7 @@
             <span class="subject_edit_btn">選択科目の登録<span class="arrow"></span></span>
           </div>
           <div>
-            <form class="subject_inner" action="{{ route('user.edit') }}" method="post">
+            <form class="subject_inner" action="{{ route('user.edit') }}" method="post" style="display: none;">
               @foreach($subject_lists as $subject_list)
               <div class="subject_item">
                 <label>{{ $subject_list->subject }}</label>
