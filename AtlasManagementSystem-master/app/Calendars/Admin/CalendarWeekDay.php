@@ -90,4 +90,12 @@ class CalendarWeekDay{
     $html[] = '</div>';
     return implode('', $html);
   }
+
+  public function isSaturday() {
+    return $this->carbon->isSaturday();
+  }
+
+  public function isSunday() {
+    return $this->carbon->isSunday();
+  }
 }

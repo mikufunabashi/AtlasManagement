@@ -87,4 +87,12 @@ class CalendarWeekDay{
      return Auth::user()->reserveSettings->where('setting_reserve', $reserveDate);
    }
 
+   public function isSaturday() {
+    return $this->carbon->isSaturday();
+  }
+
+  public function isSunday() {
+    return $this->carbon->isSunday();
+  }
+
 }

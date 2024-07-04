@@ -3,18 +3,18 @@ namespace App\Calendars\Admin;
 use Carbon\Carbon;
 use App\Models\Calendars\ReserveSettings;
 
-class CalendarSettingView{
+class CalendarSettingView {
   private $carbon;
 
-  function __construct($date){
+  function __construct($date) {
     $this->carbon = new Carbon($date);
   }
 
-  public function getTitle(){
+  public function getTitle() {
     return $this->carbon->format('Y年n月');
   }
 
-  public function render(){
+  public function render() {
     $html = [];
     $html[] = '<div class="calendar text-center">';
     $html[] = '<table class="table">';
@@ -32,26 +32,33 @@ class CalendarSettingView{
     $html[] = '<tbody class="tbody">';
     $weeks = $this->getWeeks();
 
-    foreach($weeks as $week){
+    foreach($weeks as $week) {
       $html[] = '<tr class="'.$week->getClassName().'">';
       $days = $week->getDays();
-      foreach($days as $day){
+      foreach($days as $day) {
         $startDay = $this->carbon->format("Y-m-01");
         $toDay = $this->carbon->format("Y-m-d");
+        $isPast = $startDay <= $day->everyDay() && $toDay >= $day->everyDay();
 
-       if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){
-          $html[] = '<td class="past-day calendar-td1">';
-        }else{
-          $html[] = '<td class="calendar-td1 '.$day->getClassName().'">';
+        // 過去の日付の場合に適用するクラス
+        $dayClass = $isPast ? 'past-day' : '';
+
+        // 土曜日または日曜日の場合のクラスを追加
+        if ($day->isSaturday()) {
+          $dayClass .= ' saturday';
+        } elseif ($day->isSunday()) {
+          $dayClass .= ' sunday';
         }
+
+        $html[] = '<td class="calendar-td1 ' . $dayClass . '">';
         $html[] = $day->render();
         $html[] = '<div class="adjust-area">';
-        if($day->everyDay()){
-          if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){
+        if($day->everyDay()) {
+          if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()) {
             $html[] = '<p class="d-flex m-0 p-0">1部<input class="w-25" style="height:20px;" name="reserve_day['.$day->everyDay().'][1]" type="text" form="reserveSetting" value="'.$day->onePartFrame($day->everyDay()).'" disabled></p>';
             $html[] = '<p class="d-flex m-0 p-0">2部<input class="w-25" style="height:20px;" name="reserve_day['.$day->everyDay().'][2]" type="text" form="reserveSetting" value="'.$day->twoPartFrame($day->everyDay()).'" disabled></p>';
             $html[] = '<p class="d-flex m-0 p-0">3部<input class="w-25" style="height:20px;" name="reserve_day['.$day->everyDay().'][3]" type="text" form="reserveSetting" value="'.$day->threePartFrame($day->everyDay()).'" disabled></p>';
-          }else{
+          } else {
             $html[] = '<p class="d-flex m-0 p-0">1部<input class="w-25" style="height:20px;" name="reserve_day['.$day->everyDay().'][1]" type="text" form="reserveSetting" value="'.$day->onePartFrame($day->everyDay()).'"></p>';
             $html[] = '<p class="d-flex m-0 p-0">2部<input class="w-25" style="height:20px;" name="reserve_day['.$day->everyDay().'][2]" type="text" form="reserveSetting" value="'.$day->twoPartFrame($day->everyDay()).'"></p>';
             $html[] = '<p class="d-flex m-0 p-0">3部<input class="w-25" style="height:20px;" name="reserve_day['.$day->everyDay().'][3]" type="text" form="reserveSetting" value="'.$day->threePartFrame($day->everyDay()).'"></p>';
@@ -69,20 +76,18 @@ class CalendarSettingView{
     return implode("", $html);
   }
 
-  protected function getWeeks(){
+  protected function getWeeks() {
     $weeks = [];
     $firstDay = $this->carbon->copy()->firstOfMonth();
     $lastDay = $this->carbon->copy()->lastOfMonth();
     $week = new CalendarWeek($firstDay->copy());
     $weeks[] = $week;
     $tmpDay = $firstDay->copy()->addDay(7)->startOfWeek();
-    while($tmpDay->lte($lastDay)){
+    while($tmpDay->lte($lastDay)) {
       $week = new CalendarWeek($tmpDay, count($weeks));
       $weeks[] = $week;
       $tmpDay->addDay(7);
     }
     return $weeks;
   }
-
-
 }

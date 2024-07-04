@@ -81,31 +81,36 @@ class PostsController extends Controller
 
 
     public function postEdit(Request $request){
-        // バリデーションルールを定義
         $rules = [
             'post_title' => 'required|string|max:100',
             'post_body' => 'required|string|max:5000',
         ];
 
-        // バリデーションを実行
         $validator = Validator::make($request->all(), $rules);
 
-        // バリデーションが失敗した場合
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()->back()
+                            ->withErrors($validator)
+                            ->withInput()
+                            ->with('modal', true); // モーダルを開くフラグをセッションに設定
         }
 
         Post::where('id', $request->post_id)->update([
             'post_title' => $request->post_title,
             'post' => $request->post_body,
         ]);
+
         return redirect()->route('post.detail', ['id' => $request->post_id]);
     }
+
+
+
 
     public function postDelete($id){
         Post::findOrFail($id)->delete();
         return redirect()->route('post.show');
     }
+
     public function mainCategoryCreate(Request $request){
 
         // バリデーションルールを定義

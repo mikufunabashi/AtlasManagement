@@ -48,7 +48,8 @@ $(function () {
     });
   });
 
-  $('.edit-modal-open').on('click',function(){
+  $('.edit-modal-open').on('click', function () {
+    $('.error_message').remove();
     $('.js-modal').fadeIn();
     var post_title = $(this).attr('post_title');
     var post_body = $(this).attr('post_body');
@@ -62,5 +63,22 @@ $(function () {
     $('.js-modal').fadeOut();
     return false;
   });
+
+  $('.js-modal-close').on('click', function () {
+    $('.error_message').remove();
+    $('.js-modal').fadeOut();
+    return false;
+  });
+
+  // セッションにエラーがある場合モーダルを表示
+  if (document.querySelector('.error_message')) {
+    $('.js-modal').fadeIn();
+    var post_title = $('#post_title_hidden').val();
+    var post_body = $('#post_body_hidden').val();
+    var post_id = $('#post_id_hidden').val();
+    $('.modal-inner-title input').val(post_title);
+    $('.modal-inner-body textarea').text(post_body);
+    $('.edit-modal-hidden').val(post_id);
+  }
 
 });

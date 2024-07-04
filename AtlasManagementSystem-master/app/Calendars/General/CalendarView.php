@@ -43,8 +43,17 @@ class CalendarView{
         // 日付が過去の場合は、"past-day" クラスを適用する
         $isPast = Carbon::parse($day->everyDay())->lt(Carbon::today());
 
+        // 曜日チェック
+        $dayClasses = ['calendar-td'];
+        if ($day->isSaturday()) {
+          $dayClasses[] = 'saturday';
+        } elseif ($day->isSunday()) {
+          $dayClasses[] = 'sunday';
+        }
+
         // 日付のHTML要素を生成する部分
-        $html[] = '<td class="calendar-td ' . $day->getClassName() . ' ' . ($isPast ? 'past-day' : '') . '">';
+        $html[] = '<td class="' . implode(' ', $dayClasses) . ' ' . ($isPast ? 'past-day' : '') . '">';
+
 
         // 日付のレンダリング
         $html[] = $day->render();
@@ -67,7 +76,7 @@ class CalendarView{
                   $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
               } else {
                   // 予約がない場合は受付終了を表示
-                  $html[] = '<span class="status">受付終了</span>';
+                  $html[] = '<span class="past_reserve">受付終了</span>';
                   $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
               }
           } else {

@@ -115,7 +115,7 @@ li {
 }
 
 .main-container {
-  width: 100%;
+  max-width: 100%;
   height: 100vh;
 }
 
@@ -277,6 +277,24 @@ li {
 }
 
 /* カレンダー */
+.calender1 {
+  display: flex;
+  justify-content: center;
+}
+
+.calender2 {
+  width: 90%;
+  height: 90%;
+}
+
+.calender3 {
+  /* width: 90%; */
+}
+
+.calendar {
+  width: 100%;
+}
+
 .past-day {
   color: #999;
   /* グレーにするための色指定 */
@@ -289,6 +307,18 @@ li {
 
 .sunday {
   color: #FF003B;
+}
+
+.past-day .saturday {
+  color: #2200FF;
+}
+
+.past-day .sunday {
+  color: #FF003B;
+}
+
+.past_reserve {
+  color: #999;
 }
 
 .day-blank {
@@ -359,7 +389,7 @@ li {
 
 .posts_search {
   position: relative;
-  margin: 50px auto;
+  margin: 50px 10px;
 }
 
 
@@ -674,8 +704,8 @@ li {
 .reserve_users_area {
   display: flex;
   flex-wrap: wrap;
-  width: 1200px;
-  margin: 10px 50px;
+  width: 70%;
+  margin: 10px;
   overflow: scroll;
   border-radius: 5px;
   padding: 10px;

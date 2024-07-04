@@ -34,7 +34,7 @@
       </div>
       @endforeach
     </div>
-   <div class="other_area w-25">
+   <div class="other_area">
       <div class="posts_search">
           <div class="btn_toukou"><a href="{{ route('post.input') }}">投稿</a></div>
           <div class="posts_key">
