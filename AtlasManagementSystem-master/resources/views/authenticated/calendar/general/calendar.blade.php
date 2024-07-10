@@ -1,18 +1,29 @@
 @extends('layouts.sidebar')
 
 @section('content')
-<div class="calender1 style="background:#ECF1F6;">
-  <div class="border calender2" style="border-radius:5px; background:#FFF;">
+<div style=background:#ECF1F6;>
+  <!-- <div class="border calender2" style="border-radius:5px; background:#FFF;">
     <div class="calender3" style="border-radius:5px;">
 
       <p class="text-center">{{ $calendar->getTitle() }}</p>
-        <div class="">
          {!! $calendar->render() !!}
-        </div>
 
     </div>
     <div class="text-right w-75 m-auto">
       <input type="submit" class="btn btn-primary" value="予約する" form="reserveParts">
+    </div>
+  </div> -->
+  <div class="calender1">
+    <div class="border calender2">
+      <div class="calender3">
+        <p class="text-center">{{ $calendar->getTitle() }}</p>
+        <div class="calendar">
+          {!! $calendar->render() !!}
+        </div>
+      </div>
+      <div class="text-right w-75 m-auto">
+        <input type="submit" class="btn btn-primary" value="予約する" form="reserveParts">
+      </div>
     </div>
   </div>
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
