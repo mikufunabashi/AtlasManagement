@@ -2,17 +2,6 @@
 
 @section('content')
 <div style=background:#ECF1F6;>
-  <!-- <div class="border calender2" style="border-radius:5px; background:#FFF;">
-    <div class="calender3" style="border-radius:5px;">
-
-      <p class="text-center">{{ $calendar->getTitle() }}</p>
-         {!! $calendar->render() !!}
-
-    </div>
-    <div class="text-right w-75 m-auto">
-      <input type="submit" class="btn btn-primary" value="予約する" form="reserveParts">
-    </div>
-  </div> -->
   <div class="calender1">
     <div class="border calender2">
       <div class="calender3">
@@ -21,7 +10,7 @@
           {!! $calendar->render() !!}
         </div>
       </div>
-      <div class="text-right w-75 m-auto">
+      <div class="text-right1">
         <input type="submit" class="btn btn-primary" value="予約する" form="reserveParts">
       </div>
     </div>

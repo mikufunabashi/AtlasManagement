@@ -15,15 +15,27 @@ class CalendarWeekDay{
     return "day-" . strtolower($this->carbon->format("D"));
   }
 
+  function renderDayWithReservations(){
+    $html = [];
+    $html[] = '<p class="day1">' . $this->carbon->format("j") . '日</p>';
+    $html[] = $this->dayPartCounts($this->carbon->format("Y-m-d"));
+    return implode("", $html);
+  }
+
   function render(){
     return '<p class="day">' . $this->carbon->format("j") . '日</p>';
-  }
+    }
+
 
   function everyDay(){
     return $this->carbon->format("Y-m-d");
   }
 
-  function dayPartCounts($ymd, $days){
+  function isCurrentMonth($month) {
+    return $this->carbon->format("m") == $month;
+  }
+
+  function dayPartCounts($ymd){
     $html = [];
     $one_part_reservations = ReserveSettings::withCount('users')
                                             ->where('setting_reserve', $ymd)
@@ -99,3 +111,4 @@ class CalendarWeekDay{
     return $this->carbon->isSunday();
   }
 }
+?>

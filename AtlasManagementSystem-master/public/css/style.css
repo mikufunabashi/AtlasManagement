@@ -198,10 +198,25 @@ li {
 }
 
 .day_part1 {
-  width: 90px;
+  margin-bottom: -10%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.not-current-month {
+  background-color: #D3D3D3;
+  color: transparent;
+}
+
+.not-current-month .day1,
+.not-current-month .day_part {
+  color: transparent;
+  /* 日付とリンクを透明にする */
+}
+
+.calendar-row {
+  display: contents;
 }
 
 .day_part {
@@ -277,6 +292,12 @@ li {
 }
 
 /* カレンダー */
+.calendar {
+  width: 100%;
+  height: 90%;
+
+}
+
 .calender1 {
   display: flex;
   justify-content: center;
@@ -296,11 +317,9 @@ li {
 }
 
 .calender3 {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  margin: 3% 5% 3% 5%;
   border-radius: 5px;
-  flex: 1;
+  height: 70vh;
 }
 
 .calendar-grid {
@@ -310,6 +329,7 @@ li {
   width: 100%;
   height: 100%;
   border-collapse: collapse;
+  border: 0.5px solid #E1E5E8;
 }
 
 .calendar-header,
@@ -318,10 +338,47 @@ li {
   text-align: center;
   vertical-align: middle;
   padding: 5px;
+  align-items: center;
+  justify-content: center;
 }
+
+.calendar-header {
+  width: 100%;
+  border: 0.5px solid #E1E5E8;
+}
+
+.calendar-cell {
+  width: 100%;
+  height: 100%;
+  border: 0.5px solid #E1E5E8;
+}
+
+.day1 {
+  font-size: smaller;
+  margin-bottom: 5%;
+}
+
+.day2 p {
+  margin-bottom: 2%;
+  font-size: smaller;
+}
+
+.adjust-area {
+  font-size: smaller;
+}
+
+.text-left {
+  margin: 0 15% 5%;
+}
+
 
 .calendar-th {
   background-color: #f0f0f0;
+}
+
+.calendar-week {
+  display: flex;
+  width: 100%;
 }
 
 .past-day {
@@ -352,6 +409,11 @@ li {
 
 .day-blank {
   color: #494949;
+}
+
+.text-right1 {
+  margin-left: 80%;
+  margin-top: 3vh;
 }
 
 /* モーダル */

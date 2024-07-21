@@ -16,22 +16,19 @@ class CalendarView {
 
   public function render() {
     $html = [];
-    $html[] = '<div class="calendar text-center">';
-    $html[] = '<table class="table">';
-    $html[] = '<thead>';
-    $html[] = '<tr>';
-    $html[] = '<th class="calendar-td">月</th>';
-    $html[] = '<th class="calendar-td">火</th>';
-    $html[] = '<th class="calendar-td">水</th>';
-    $html[] = '<th class="calendar-td">木</th>';
-    $html[] = '<th class="calendar-td">金</th>';
-    $html[] = '<th class="saturday calendar-td">土</th>';
-    $html[] = '<th class="sunday calendar-td">日</th>';
-    $html[] = '</tr>';
-    $html[] = '</thead>';
-    $html[] = '<tbody class="tbody">';
+    $html[] = '<div class="calendar-week">';
+    $html[] = '<div class="calendar-header">月</div>';
+    $html[] = '<div class="calendar-header">火</div>';
+    $html[] = '<div class="calendar-header">水</div>';
+    $html[] = '<div class="calendar-header">木</div>';
+    $html[] = '<div class="calendar-header">金</div>';
+    $html[] = '<div class="calendar-header saturday">土</div>';
+    $html[] = '<div class="calendar-header sunday">日</div>';
+    $html[] = '</div>';
+    $html[] = '<div class="calendar-grid">';
 
     $weeks = $this->getWeeks();
+    $currentMonth = $this->carbon->format("m");
 
     foreach($weeks as $week) {
       $html[] = '<tr class="'.$week->getClassName().'">';
@@ -51,15 +48,16 @@ class CalendarView {
           $dayClass .= ' sunday';
         }
 
-        $html[] = '<td class="calendar-td1 ' . $dayClass . '">';
-        $html[] = $day->render();
-        $html[] = $day->dayPartCounts($day->everyDay(), $day->everyDay());
-        $html[] = '</td>';
+        if (!$day->isCurrentMonth($currentMonth)) {
+          $dayClass .= ' not-current-month';
+        }
+
+        $html[] = '<div class="calendar-cell ' . $dayClass . '">';
+        $html[] = $day->renderDayWithReservations(); // 新しいメソッドを呼び出す
+        $html[] = '</div>';
       }
       $html[] = '</tr>';
     }
-    $html[] = '</tbody>';
-    $html[] = '</table>';
     $html[] = '</div>';
 
     return implode("", $html);
@@ -80,3 +78,4 @@ class CalendarView {
     return $weeks;
   }
 }
+?>

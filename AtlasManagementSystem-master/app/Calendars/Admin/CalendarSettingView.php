@@ -16,24 +16,21 @@ class CalendarSettingView {
 
   public function render() {
     $html = [];
-    $html[] = '<div class="calendar text-center">';
-    $html[] = '<table class="table">';
-    $html[] = '<thead>';
-    $html[] = '<tr>';
-    $html[] = '<th class="calendar-td">月</th>';
-    $html[] = '<th class="calendar-td">火</th>';
-    $html[] = '<th class="calendar-td">水</th>';
-    $html[] = '<th class="calendar-td">木</th>';
-    $html[] = '<th class="calendar-td">金</th>';
-    $html[] = '<th class="saturday calendar-td">土</th>';
-    $html[] = '<th class="sunday calendar-td">日</th>';
-    $html[] = '</tr>';
-    $html[] = '</thead>';
-    $html[] = '<tbody class="tbody">';
+    $html[] = '<div class="calendar-week">';
+    $html[] = '<div class="calendar-header">月</div>';
+    $html[] = '<div class="calendar-header">火</div>';
+    $html[] = '<div class="calendar-header">水</div>';
+    $html[] = '<div class="calendar-header">木</div>';
+    $html[] = '<div class="calendar-header">金</div>';
+    $html[] = '<div class="calendar-header saturday">土</div>';
+    $html[] = '<div class="calendar-header sunday">日</div>';
+    $html[] = '</div>';
+    $html[] = '<div class="calendar-grid">';
     $weeks = $this->getWeeks();
+    $currentMonth = $this->carbon->format("m");
 
     foreach($weeks as $week) {
-      $html[] = '<tr class="'.$week->getClassName().'">';
+      $html[] = '<div class="calendar-row '.$week->getClassName().'">';
       $days = $week->getDays();
       foreach($days as $day) {
         $startDay = $this->carbon->format("Y-m-01");
@@ -50,8 +47,12 @@ class CalendarSettingView {
           $dayClass .= ' sunday';
         }
 
-        $html[] = '<td class="calendar-td1 ' . $dayClass . '">';
-        $html[] = $day->render();
+        if (!$day->isCurrentMonth($currentMonth)) {
+          $dayClass .= ' not-current-month';
+        }
+
+        $html[] = '<div class="calendar-cell ' . $dayClass . '">';
+        $html[] = '<div class="day2">' . $day->render() . '</div>';
         $html[] = '<div class="adjust-area">';
         if($day->everyDay()) {
           if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()) {
@@ -65,12 +66,10 @@ class CalendarSettingView {
           }
         }
         $html[] = '</div>';
-        $html[] = '</td>';
+        $html[] = '</div>';
       }
-      $html[] = '</tr>';
+      $html[] = '</div>';
     }
-    $html[] = '</tbody>';
-    $html[] = '</table>';
     $html[] = '</div>';
     $html[] = '<form action="'.route('calendar.admin.update').'" method="post" id="reserveSetting">'.csrf_field().'</form>';
     return implode("", $html);
@@ -91,3 +90,4 @@ class CalendarSettingView {
     return $weeks;
   }
 }
+?>
