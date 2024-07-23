@@ -53,7 +53,7 @@
     </div>
     @endforeach
   </div>
-  <div class="w-25">
+  <div class="w-25" style="height: 100px">
     <form action="{{ route('user.show') }}" method="get" id="userSearchRequest">
         <div class="search_area">
           <label>検索</label>
